@@ -1,0 +1,62 @@
+{
+  "B1608+656": {
+    "measured_delays_days": [
+      31.5,
+      36.0,
+      77.0
+    ],
+    "uncertainties_days": [
+      1.5,
+      1.5,
+      1.5
+    ],
+    "h0licow_model_delays_days": [
+      31.2,
+      35.8,
+      76.5
+    ],
+    "z_lens": 0.63,
+    "z_source": 1.394,
+    "ra": 242.275,
+    "dec": 65.706,
+    "dm_column": "high"
+  },
+  "RXJ1131-1231": {
+    "measured_delays_days": [
+      91.0
+    ],
+    "uncertainties_days": [
+      1.5
+    ],
+    "h0licow_model_delays_days": [
+      90.3
+    ],
+    "z_lens": 0.295,
+    "z_source": 0.654,
+    "ra": 172.958,
+    "dec": -12.532,
+    "dm_column": "medium"
+  },
+  "HE0435-1223": {
+    "measured_delays_days": [
+      8.0,
+      2.1,
+      14.4
+    ],
+    "uncertainties_days": [
+      0.8,
+      0.8,
+      0.8
+    ],
+    "h0licow_model_delays_days": [
+      7.8,
+      2.0,
+      14.2
+    ],
+    "z_lens": 0.454,
+    "z_source": 1.693,
+    "ra": 69.676,
+    "dec": -12.381,
+    "dm_column": "high"
+  }
+}

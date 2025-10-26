@@ -1,0 +1,13 @@
+io:
+  data_dir: "./time_thickness_data"
+
+params:
+  # SIGN CONVENTIONS (theory):
+  #   epsilon_grain > 0  (time thickening from grain)
+  #   epsilon_flat  < 0  (time flattening from radiation)
+  epsilon_grain: 1.0e-18
+  epsilon_flat: -1.0e-19
+  E0_eV: 10.0
+  kappa0: 1.0e20
+  p: 1.0
+  q: 1.0

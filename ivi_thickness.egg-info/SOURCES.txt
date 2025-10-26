@@ -1,0 +1,11 @@
+setup.py
+ivi_thickness/__init__.py
+ivi_thickness/data.py
+ivi_thickness/fit.py
+ivi_thickness/model.py
+ivi_thickness/plots.py
+ivi_thickness.egg-info/PKG-INFO
+ivi_thickness.egg-info/SOURCES.txt
+ivi_thickness.egg-info/dependency_links.txt
+ivi_thickness.egg-info/requires.txt
+ivi_thickness.egg-info/top_level.txt

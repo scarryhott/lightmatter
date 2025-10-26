@@ -1,0 +1,44 @@
+{
+  "io": {
+    "data_dir": "./time_thickness_data"
+  },
+  "params": {
+    "epsilon_grain": 1e-18,
+    "epsilon_flat": -1e-19,
+    "E0_eV": 10.0,
+    "kappa0": "1.0e20",
+    "p": 1.0,
+    "q": 1.0
+  },
+  "priors": {
+    "log10_eps_grain": [
+      -20.0,
+      -14.0
+    ],
+    "log10_eps_flat": [
+      -22.0,
+      -16.0
+    ],
+    "p": [
+      0.3,
+      2.0
+    ],
+    "q": [
+      0.3,
+      2.0
+    ],
+    "log10_E0_eV": [
+      -1.0,
+      2.0
+    ],
+    "a_sigma": 0.1,
+    "ln_s_bounds": [
+      -13.815510557964274,
+      -2.302585092994046
+    ],
+    "sign_eps_flat": -1.0
+  },
+  "pulsar": {
+    "frac_unc": 0.2
+  }
+}

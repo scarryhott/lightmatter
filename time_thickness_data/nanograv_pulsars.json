@@ -1,0 +1,32 @@
+{
+  "pulsars": {
+    "J0030+0451": {
+      "distance_kpc": 0.3,
+      "dm_level": "low",
+      "rms_residual_us": 0.12,
+      "ra": 7.5,
+      "dec": 4.85
+    },
+    "J0613-0200": {
+      "distance_kpc": 1.2,
+      "dm_level": "medium",
+      "rms_residual_us": 0.85,
+      "ra": 93.25,
+      "dec": -2.0
+    },
+    "J1713+0747": {
+      "distance_kpc": 1.1,
+      "dm_level": "low",
+      "rms_residual_us": 0.065,
+      "ra": 258.25,
+      "dec": 7.78
+    },
+    "J1909-3744": {
+      "distance_kpc": 1.5,
+      "dm_level": "low",
+      "rms_residual_us": 0.055,
+      "ra": 287.25,
+      "dec": -37.73
+    }
+  }
+}

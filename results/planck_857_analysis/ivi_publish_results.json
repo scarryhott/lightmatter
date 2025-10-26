@@ -1,0 +1,152 @@
+{
+  "params": {
+    "epsilon_grain": 1e-18,
+    "epsilon_flat": -1e-19,
+    "E0_eV": 10.0,
+    "kappa0": 1e+20,
+    "p": 1.0,
+    "q": 1.0
+  },
+  "lensing": {
+    "channel": "lensing",
+    "chi2": 0.02749694343982593,
+    "dof": 4,
+    "chi2_reduced": 0.006874235859956482,
+    "coef_names": [
+      "intercept",
+      "G_temp",
+      "F_kappa"
+    ],
+    "coef": [
+      0.009442853414231895,
+      0.05774138569693373,
+      0.05630166990127825
+    ],
+    "coef_ci95": [
+      0.047506195398060454,
+      1.0160146815364084,
+      0.9980857891790672
+    ],
+    "scale_info": {
+      "mu_GT": 0.7551408710504344,
+      "sd_GT": 0.6106726964867151,
+      "mu_FK": 2.785714285714286e-22,
+      "sd_FK": 8.236305888799756e-23,
+      "y_mean": 0.017030770739192777,
+      "y_std": 0.014889988291461572,
+      "n_obs": 7
+    }
+  },
+  "clocks": {
+    "channel": "clocks",
+    "chi2": 1.4926249766374926e-35,
+    "dof": 98,
+    "chi2_reduced": 1.5230867108545842e-37,
+    "coef_names": [
+      "a (intercept)",
+      "eps_flat (slope)"
+    ],
+    "coef": [
+      -2.5134805741928913e-20,
+      -6.025693477679909e-21
+    ],
+    "coef_ci95": [
+      7.649241732628777e-20,
+      7.649241732628777e-20
+    ],
+    "scale_info": {
+      "dG_mean": 0.0004804163293565002,
+      "dG_std": 0.00048041632935650014,
+      "eps_flat_est": -2.8948415423743856e-24,
+      "eps_flat_se": 1.874908487525547e-23,
+      "eps_flat_upper_95": 3.385336481312634e-23,
+      "n_obs": 100
+    }
+  },
+  "pulsars": {
+    "channel": "pulsars",
+    "chi2": 27.187126490375576,
+    "dof": 2,
+    "chi2_reduced": 13.593563245187788,
+    "coef_names": [
+      "a (intercept)",
+      "scale * eps_grain"
+    ],
+    "coef": [
+      0.059929618108572856,
+      0.06157097391999218
+    ],
+    "coef_ci95": [
+      0.17239203613548693,
+      1.321267060130342
+    ],
+    "scale_info": {}
+  },
+  "combined": {
+    "chi2_total": 27.2146234338154,
+    "dof_total": 104,
+    "chi2_reduced": 0.2616790714789942
+  },
+  "provenance": {
+    "config": "configs/physical.yaml",
+    "timestamp": "20251026_180453",
+    "code_version": "0.1.0",
+    "tdcosmo_csv": null,
+    "clock_csv": null,
+    "pulsar_csv": null,
+    "kappa_csv": "data/kappa_ext.csv",
+    "kappa_map": null,
+    "kappa_field": 0,
+    "kappa_nest": false,
+    "kappa_smooth_arcmin": null,
+    "kappa_mask": null,
+    "kappa_mask_field": 0,
+    "kappa_scale": 1.0,
+    "rad_map": "data/planck/HFI_SkyMap_857_2048_R2.02_full.fits",
+    "rad_field": 0,
+    "rad_nest": false,
+    "rad_smooth_arcmin": null,
+    "rad_mask": null,
+    "rad_mask_field": 0,
+    "auto_I0": true,
+    "I0_input": null,
+    "I0_used": 8.068743705749512,
+    "gamma": 1.0,
+    "require_sky": false,
+    "map_provenance": {
+      "kappa": null,
+      "radiation": {
+        "map_path": "data/planck/HFI_SkyMap_857_2048_R2.02_full.fits",
+        "field": 0,
+        "nest": false,
+        "smooth_fwhm_arcmin": null,
+        "mask_path": null,
+        "mask_field": 0,
+        "auto_I0": true,
+        "I0_used": 8.068743705749512,
+        "I0_used_pulsars": 8.068743705749512,
+        "gamma": 1.0,
+        "lens_stats": {
+          "I0_used": 8.068743705749512,
+          "median_rad": 8.068743705749512,
+          "p16_rad": 1.0821027755737305,
+          "p84_rad": 8.353943061828614,
+          "gamma": 1.0,
+          "nside": 2048,
+          "n_kept": 7,
+          "n_total": 7
+        },
+        "pulsar_stats": {
+          "I0_used": 8.068743705749512,
+          "median_rad": 18.593358993530273,
+          "p16_rad": 8.407561645507812,
+          "p84_rad": 24.957856369018554,
+          "gamma": 1.0,
+          "nside": 2048,
+          "n_kept": 4,
+          "n_total": 4
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "params": {
+    "epsilon_grain": 1e-18,
+    "epsilon_flat": -1e-19,
+    "E0_eV": 10.0,
+    "kappa0": 1e+20,
+    "p": 1.0,
+    "q": 1.0
+  },
+  "lensing": {
+    "channel": "lensing",
+    "chi2": 0.022720414280110308,
+    "dof": 4,
+    "chi2_reduced": 0.005680103570027577,
+    "coef_names": [
+      "intercept",
+      "G_temp",
+      "F_kappa"
+    ],
+    "coef": [
+      0.009443628904698782,
+      -0.005545666966364066,
+      0.0033827624751927186
+    ],
+    "coef_ci95": [
+      0.05188006285917161,
+      0.10628053525066691,
+      0.0754102006647813
+    ],
+    "scale_info": {
+      "mu_GT": 5.144053630128054e-06,
+      "sd_GT": 1.6785738647279922e-06,
+      "mu_FK": 2.785714285714286e-22,
+      "sd_FK": 8.236305888799756e-23,
+      "y_mean": 0.017030770739192777,
+      "y_std": 0.014889988291461572,
+      "n_obs": 7
+    }
+  },
+  "clocks": {
+    "channel": "clocks",
+    "chi2": 1.4926249766374926e-35,
+    "dof": 98,
+    "chi2_reduced": 1.5230867108545842e-37,
+    "coef_names": [
+      "a (intercept)",
+      "eps_flat (slope)"
+    ],
+    "coef": [
+      -2.5134805741928913e-20,
+      -6.025693477679909e-21
+    ],
+    "coef_ci95": [
+      7.649241732628777e-20,
+      7.649241732628777e-20
+    ],
+    "scale_info": {
+      "dG_mean": 0.0004804163293565002,
+      "dG_std": 0.00048041632935650014,
+      "eps_flat_est": -2.8948415423743856e-24,
+      "eps_flat_se": 1.874908487525547e-23,
+      "eps_flat_upper_95": 3.385336481312634e-23,
+      "n_obs": 100
+    }
+  },
+  "pulsars": {
+    "channel": "pulsars",
+    "chi2": 27.187126490375576,
+    "dof": 2,
+    "chi2_reduced": 13.593563245187788,
+    "coef_names": [
+      "a (intercept)",
+      "scale * eps_grain"
+    ],
+    "coef": [
+      0.059929618108572856,
+      0.06157097391999218
+    ],
+    "coef_ci95": [
+      0.17239203613548693,
+      1.321267060130342
+    ],
+    "scale_info": {}
+  },
+  "combined": {
+    "chi2_total": 27.209846904655688,
+    "dof_total": 104,
+    "chi2_reduced": 0.261633143313997
+  },
+  "provenance": {
+    "tdcosmo_csv": "data/tdcosmo_time_delays.csv",
+    "kappa_csv": "data/kappa_ext.csv",
+    "kappa_scale": 1.0,
+    "healpix": "/path/to/planck_857.fits",
+    "nside": 2048,
+    "nest": true,
+    "I0_mjysr": null,
+    "auto_I0": true,
+    "gamma": 1.0,
+    "clock_csv": "data/clocks_timeseries.csv",
+    "pulsar_csv": "data/pulsar_residuals.csv",
+    "config": "configs/physical.yaml",
+    "timestamp": "20251026_123703",
+    "code_version": "0.1.0"
+  }
+}

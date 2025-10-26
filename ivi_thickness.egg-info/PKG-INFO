@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: ivi_thickness
+Version: 0.1.0
+Summary: IVI Time-Thickness package for analyzing time dilation effects
+Home-page: 
+Author: 
+Author-email: 
+Requires-Python: >=3.8
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: pandas>=1.2.0
+Requires-Dist: pyyaml>=5.0
+Requires-Dist: scipy>=1.6.0
+Requires-Dist: matplotlib>=3.3.0
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

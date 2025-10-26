@@ -1,0 +1,25 @@
+# Physical calibration configuration for IVI time-thickness analysis
+io:
+  data_dir: "./time_thickness_data"
+
+# Default parameter values (used for initial setup)
+params:
+  epsilon_grain: 1.0e-18
+  epsilon_flat: -1.0e-19
+  E0_eV: 10.0
+  kappa0: 1.0e20
+  p: 1.0
+  q: 1.0
+
+# Radiation field configuration
+radiation:
+  # Reference intensity [MJy/sr] - set to median of your lens sightlines
+  I0_mjysr: 1.0
+  # Exponent for intensity scaling
+  gamma: 1.0
+
+# Optional: kappa_ext CSV configuration
+# kappa_ext:
+#   scale: 1.0  # Optional scaling factor if kappa_ext needs unit conversion
+#   column: "kappa_ext"  # Column name in CSV (default: kappa_ext)
+#   sigma_column: "kappa_ext_err"  # Optional error column
