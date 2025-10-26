@@ -1,0 +1,1 @@
+data/planck/HFI_SkyMap_857_2048_R2.02_full.fits filter=lfs diff=lfs merge=lfs -text
