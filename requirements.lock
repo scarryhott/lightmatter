@@ -1,0 +1,12 @@
+numpy==1.26.4
+scipy==1.11.4
+pandas==2.1.4
+matplotlib==3.8.2
+healpy==1.16.5
+astropy==6.0.0
+PyYAML==6.0.1
+emcee==3.1.4
+tqdm==4.66.2
+pytest==7.4.3
+pytest-cov==4.1.0
+ruff==0.1.14

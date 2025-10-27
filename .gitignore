@@ -1,3 +1,13 @@
+# Data products (large or user-provided)
 data/planck/HFI_SkyMap_857_2048_R2.02_full.fits
-data/planck/HFI_SkyMap_857_2048_R2.02_full.fits
-data/planck/HFI_SkyMap_857_2048_R2.02_full.fits
+data/planck/COM_CompMap_Lensing_4096_R3.00_kappa.fits
+
+# Python build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Tooling reports
+..bfg-report/

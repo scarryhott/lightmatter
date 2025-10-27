@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lightmatter-ivi"
+version = "0.1.0"
+description = "Inference and validation infrastructure for interfacial vacuum irregularities (IVI)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Lightmatter Contributors" }
+]
+dependencies = [
+  "numpy==1.26.4",
+  "scipy==1.11.4",
+  "pandas==2.1.4",
+  "matplotlib==3.8.2",
+  "healpy==1.16.5",
+  "astropy==6.0.0",
+  "PyYAML==6.0.1",
+  "emcee==3.1.4",
+  "tqdm==4.66.2"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==7.4.3",
+  "pytest-cov==4.1.0",
+  "ruff==0.1.14"
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I"]
+
+[tool.ruff.per-file-ignores]
+"tests/*" = ["D"]

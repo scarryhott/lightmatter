@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: "Lightmatter IVI Analysis"
+message: "If you use this software, please cite it using the metadata below."
+type: software
+abstract: >
+  Inference and validation infrastructure for testing interfacial vacuum
+  irregularities (IVI) via strong-lens time delays, optical clocks, and
+  pulsar timing, with sky-varying radiation and convergence maps.
+authors:
+  - family-names: "Lightmatter"
+    given-names: "Contributors"
+    affiliation: "Lightmatter Project"
+    orcid: "0000-0000-0000-0000"
+repository-code: "https://github.com/sadapple79-hub/lightmatter"
+license: "MIT"
+version: "0.1.0"
+doi: "10.5281/zenodo.0000000"
+date-released: "2025-10-26"
+url: "https://github.com/sadapple79-hub/lightmatter"

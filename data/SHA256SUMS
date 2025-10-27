@@ -1,0 +1,9 @@
+# SHA-256 checksums for repository-tracked data files
+#
+# Verify with:
+#   shasum -a 256 -c SHA256SUMS
+#
+c0c3b1d7c9c04793192ebbfe67f73aaefc8dce823b58ebc05affec418f2fa91a  tdcosmo_time_delays.csv
+c4bd4affe0c27a8383a2e4915e6c091e91e3d49b1df1295abc7e1e4c80fb83ca  kappa_ext.csv
+bbc771094a774774f3dc7d709f13bb5b049c40664095db0591c3037c162e934e  h0licow_kappa_ext.csv
+16a2b66851ac0af4449b360775ffe817f5162b98529aca56d966e286a7485be4  README.md

@@ -221,6 +221,14 @@ def fit_lensing_channel(
     FK = F_kappa(kappa_los, params)
     
     # Standardize predictors if requested
+    sigma_summary = {
+        "values": sigR.tolist(),
+        "median": float(np.median(sigR)),
+        "mean": float(np.mean(sigR)),
+        "min": float(np.min(sigR)),
+        "max": float(np.max(sigR))
+    }
+
     if standardize:
         GT_std, mu_GT, sd_GT = _standardize(GT)
         FK_std, mu_FK, sd_FK = _standardize(FK)
@@ -238,12 +246,30 @@ def fit_lensing_channel(
                 'n_obs': len(FK)
             }
         }
+        scale_info["sigma_obs"] = sigma_summary
         X = np.column_stack([np.ones_like(R), GT_std, FK_std])
         names = ["intercept", "G_temp", "F_kappa"]
     else:
         X = np.column_stack([np.ones_like(R), GT, FK])
         names = ["intercept", "G_temp", "F_kappa"]
         scale_info = {}
+        mu_GT = float(np.mean(GT))
+        sd_GT = float(np.std(GT))
+        mu_FK = float(np.mean(FK))
+        sd_FK = float(np.std(FK))
+        scale_info["sigma_obs"] = sigma_summary
+        scale_info["G_temp"] = {
+            "mean": mu_GT,
+            "std": sd_GT,
+            "source": G_source,
+            "n_obs": len(GT)
+        }
+        scale_info["F_kappa"] = {
+            "mean": mu_FK,
+            "std": sd_FK,
+            "source": kappa_source,
+            "n_obs": len(FK)
+        }
     
     # Check for constant columns in the design matrix (excluding intercept)
     X_no_intercept = X[:, 1:] if X.shape[1] > 1 else X
@@ -320,12 +346,15 @@ def fit_lensing_channel(
         beta, se, resid, chi2, dof = ridge_regression(X, R, w, alpha=1e-3)
     
     # Store scaling information for interpretation
-    scale_info = {
-        "mu_GT": mu_GT, "sd_GT": sd_GT,
-        "mu_FK": mu_FK, "sd_FK": sd_FK,
-        "y_mean": np.mean(R), "y_std": np.std(R),
+    scale_info.update({
+        "mu_GT": mu_GT,
+        "sd_GT": sd_GT,
+        "mu_FK": mu_FK,
+        "sd_FK": sd_FK,
+        "y_mean": float(np.mean(R)),
+        "y_std": float(np.std(R)),
         "n_obs": len(R)
-    }
+    })
     
     return FitResult(
         beta=beta,
@@ -372,9 +401,19 @@ def fit_clock_channel(df_clock: pd.DataFrame, params: Params) -> FitResult:
     beta, se, resid, chi2, dof = weighted_ols(X, r, w)
     
     # Calculate physical ε_flat (convert from standardized coefficient)
-    eps_flat_est = beta[1] * sd_dG  # Convert back to original scale
-    eps_flat_se = se[1] * sd_dG
+    slope_scale = sd_dG if sd_dG != 0 else 1.0
+    eps_flat_est = beta[1] / slope_scale  # Convert back to original scale
+    eps_flat_se = se[1] / slope_scale
     eps_flat_upper = eps_flat_est + 1.96 * eps_flat_se  # 95% upper limit
+
+    sigma_obs = np.clip(1.0 / np.sqrt(np.clip(w, 1e-24, None)), 1e-18, None)
+    sigma_summary = {
+        "values": sigma_obs.tolist(),
+        "median": float(np.median(sigma_obs)),
+        "mean": float(np.mean(sigma_obs)),
+        "min": float(np.min(sigma_obs)),
+        "max": float(np.max(sigma_obs))
+    }
     
     # Store scaling information
     scale_info = {
@@ -383,7 +422,8 @@ def fit_clock_channel(df_clock: pd.DataFrame, params: Params) -> FitResult:
         "eps_flat_est": eps_flat_est,
         "eps_flat_se": eps_flat_se,
         "eps_flat_upper_95": eps_flat_upper,
-        "n_obs": len(r)
+        "n_obs": len(r),
+        "sigma_obs": sigma_summary
     }
     
     return FitResult(beta, se, chi2, dof, resid, names, scale_info)
@@ -410,7 +450,22 @@ def fit_pulsar_channel(df_psr: pd.DataFrame, params: Params, datahub):
     names = ["a (intercept)", "scale * eps_grain"]
 
     beta, se, resid, chi2, dof = weighted_ols(X, y, w)
-    return FitResult(beta, se, chi2, dof, resid, names)
+    sigma_obs = np.clip(1.0 / np.sqrt(np.clip(w, 1e-24, None)), 1e-18, None)
+    scale_info = {
+        "sigma_obs": {
+            "values": sigma_obs.tolist(),
+            "median": float(np.median(sigma_obs)),
+            "mean": float(np.mean(sigma_obs)),
+            "min": float(np.min(sigma_obs)),
+            "max": float(np.max(sigma_obs))
+        },
+        "predictor": {
+            "mean": float(np.mean(x)),
+            "std": float(np.std(x)),
+            "n_obs": len(x)
+        }
+    }
+    return FitResult(beta, se, chi2, dof, resid, names, scale_info)
 
 # -----------------------
 # Combined assessment
@@ -503,8 +558,8 @@ def jackknife_lensing(df_pairs: pd.DataFrame, params: Params, datahub,
         
     return valid_results
 
-def permutation_test(df_pairs: pd.DataFrame, params: Params, datahub, 
-                    n_perm: int = 200) -> Dict[str, Any]:
+def permutation_test(df_pairs: pd.DataFrame, params: Params, datahub,
+                    n_perm: int = 200, rng: Optional[np.random.Generator] = None) -> Dict[str, Any]:
     """
     Permutation test to assess significance of lensing signals.
     
@@ -525,10 +580,12 @@ def permutation_test(df_pairs: pd.DataFrame, params: Params, datahub,
     null_dist = np.zeros((n_perm, len(real_beta)))
     df_perm = df_pairs.copy()
     
+    rng = np.random.default_rng() if rng is None else rng
+
     # Run permutations
     for i in range(n_perm):
         # Shuffle sky positions while keeping other columns fixed
-        idx = np.random.permutation(len(df_perm))
+        idx = rng.permutation(len(df_perm))
         df_perm["ra_deg"] = df_perm["ra_deg"].iloc[idx].values
         df_perm["dec_deg"] = df_perm["dec_deg"].iloc[idx].values
         

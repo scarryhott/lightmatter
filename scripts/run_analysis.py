@@ -35,6 +35,7 @@ from ivi_thickness.fit import (
     permutation_test
 )
 from ivi_thickness.plots import scatter_with_fit, residual_hist
+from ivi_thickness.diagnostics import posterior_predictive_check
 
 # Set up better plotting style
 plt.style.use('seaborn-v0_8-whitegrid')
@@ -92,6 +93,8 @@ def parse_args():
     # Clock and Pulsar data options
     parser.add_argument('--clock-csv', help='Path to CSV with optical clock residuals (comparison,epoch_mjd,r,T1_K,T2_K[,w])')
     parser.add_argument('--pulsar-csv', help='Path to CSV with pulsar timing residuals (pulsar,toa_mjd,resid_us,resid_err_us[,distance_kpc,ra_deg,dec_deg])')
+    parser.add_argument('--rng-seed', type=int, default=0,
+                       help='Seed controlling random draws for diagnostics (default: 0).')
     
     # Plotting options
     plot_group = parser.add_mutually_exclusive_group()
@@ -170,10 +173,13 @@ def save_publication_bundle(
             "dof_total":  int(comb.dof_total),
             "chi2_reduced": float(comb.chi2_total / max(1, comb.dof_total)),
         },
+        "diagnostics": args.get('diagnostics'),
         "provenance": {
             "config": args.get('config_path'),
             "timestamp": time.strftime("%Y%m%d_%H%M%S"),
             "code_version": "0.1.0",
+            "rng_seed": args.get('rng_seed'),
+            "rng_draws": args.get('rng_draws'),
             "tdcosmo_csv": args.get('tdcosmo_csv'),
             "clock_csv": args.get('clock_csv'),
             "pulsar_csv": args.get('pulsar_csv'),
@@ -335,6 +341,7 @@ def run_analysis(
     I0: float = None,
     gamma: float = 1.0,
     require_sky: bool = False,
+    rng_seed: int = 0,
     **kwargs
 ) -> Dict[str, Any]:
     """Run the full IVI time-thickness analysis pipeline."""
@@ -354,6 +361,10 @@ def run_analysis(
         p=cfg["params"]["p"],
         q=cfg["params"]["q"]
     )
+    
+    base_seed = int(rng_seed)
+    rng_master = np.random.default_rng(base_seed)
+    rng_draws: Dict[str, int] = {}
     
     # Initialize data hub
     datahub = DataHub(cfg['io']['data_dir'])
@@ -572,7 +583,60 @@ def run_analysis(
             'require_sky': bool(require_sky)
         }
     }
+    results['rng'] = {
+        'base_seed': base_seed,
+        'draws': dict(rng_draws)
+    }
+    results['physical_calibration'].setdefault('rng', results['rng'])
+    results.setdefault('diagnostics', {})
     
+    # Posterior predictive checks
+    diagnostics_ppc = {}
+    try:
+        sigma_lens = np.array(lens_fit.scale_info.get('sigma_obs', {}).get('values', []), dtype=float)
+        if sigma_lens.size == len(df_lens):
+            R = (df_lens["dt_obs"].to_numpy(float) - df_lens["dt_gr"].to_numpy(float)) / df_lens["dt_gr"].to_numpy(float)
+            yhat_lens = R - lens_fit.resid
+            lens_ppc_seed = int(rng_master.integers(2**32))
+            rng_draws['ppc_lensing'] = lens_ppc_seed
+            ppc_rng = np.random.default_rng(lens_ppc_seed)
+            diagnostics_ppc["lensing"] = posterior_predictive_check(R, yhat_lens, sigma_lens, ppc_rng)
+    except Exception as exc:  # pragma: no cover - diagnostics failure should not halt run
+        diagnostics_ppc["lensing_error"] = {"error": str(exc)}
+
+    try:
+        sigma_clock = np.array(clock_fit.scale_info.get('sigma_obs', {}).get('values', []), dtype=float)
+        if sigma_clock.size == len(df_clock):
+            r = df_clock["r"].to_numpy(float)
+            yhat_clock = r - clock_fit.resid
+            clock_ppc_seed = int(rng_master.integers(2**32))
+            rng_draws['ppc_clocks'] = clock_ppc_seed
+            ppc_rng = np.random.default_rng(clock_ppc_seed)
+            diagnostics_ppc["clocks"] = posterior_predictive_check(r, yhat_clock, sigma_clock, ppc_rng)
+    except Exception as exc:  # pragma: no cover
+        diagnostics_ppc["clocks_error"] = {"error": str(exc)}
+
+    try:
+        sigma_psr = np.array(puls_fit.scale_info.get('sigma_obs', {}).get('values', []), dtype=float)
+        if sigma_psr.size == len(df_psr):
+            y_psr = df_psr["rms_residual_us"].to_numpy(float)
+            yhat_psr = y_psr - puls_fit.resid
+            pulsar_ppc_seed = int(rng_master.integers(2**32))
+            rng_draws['ppc_pulsars'] = pulsar_ppc_seed
+            ppc_rng = np.random.default_rng(pulsar_ppc_seed)
+            diagnostics_ppc["pulsars"] = posterior_predictive_check(y_psr, yhat_psr, sigma_psr, ppc_rng)
+    except Exception as exc:  # pragma: no cover
+        diagnostics_ppc["pulsars_error"] = {"error": str(exc)}
+
+    if diagnostics_ppc:
+        results.setdefault('diagnostics', {})
+        results['diagnostics']['posterior_predictive'] = diagnostics_ppc
+        printable = {k: v for k, v in diagnostics_ppc.items() if isinstance(v, dict) and "two_tailed" in v}
+        if printable:
+            print("\n[DIAGNOSTICS] Posterior predictive checks (χ² two-tailed p-values):")
+            for channel, info in printable.items():
+                print(f"  {channel}: p = {info['two_tailed']:.3f}")
+*** End Patch
     # Run jackknife analysis for lensing
     if run_jackknife and len(df_lens['lens_id'].unique()) > 1:
         print("\n[DIAGNOSTICS] Running jackknife analysis...")
@@ -612,7 +676,7 @@ def run_analysis(
                 'c_mean': jk_summary.get('coeff_1_mean', np.nan),
                 'c_std': jk_summary.get('coeff_1_std', np.nan)
             })
-        results['diagnostics'] = {'jackknife': jk_summary}
+        results.setdefault('diagnostics', {})['jackknife'] = jk_summary
         
         print(f"  Jackknife stability (n={jk_summary['n_jackknife']}, n_coeffs={jk_summary['n_coefficients']}):")
         
@@ -634,7 +698,10 @@ def run_analysis(
         print(f"\n[DIAGNOSTICS] Running permutation test (n={n_perm})...")
         results.setdefault('diagnostics', {})
         try:
-            perm_results = permutation_test(df_lens, params, datahub, n_perm=n_perm)
+            perm_seed = int(rng_master.integers(2**32))
+            rng_draws['permutation'] = perm_seed
+            perm_rng = np.random.default_rng(perm_seed)
+            perm_results = permutation_test(df_lens, params, datahub, n_perm=n_perm, rng=perm_rng)
             results['diagnostics']['permutation'] = perm_results
             
             print(f"  Permutation p-values (n={n_perm}):")
@@ -712,7 +779,10 @@ def run_analysis(
             'map_provenance': map_provenance,
             'tdcosmo_csv': tdcosmo_csv,
             'clock_csv': clock_csv,
-            'pulsar_csv': pulsar_csv
+            'pulsar_csv': pulsar_csv,
+            'diagnostics': results.get('diagnostics'),
+            'rng_seed': base_seed,
+            'rng_draws': dict(rng_draws)
         }
     )
     
@@ -923,7 +993,8 @@ def main():
         auto_I0=args.auto_I0,
         I0=args.I0,
         gamma=args.gamma,
-        require_sky=args.require_sky
+        require_sky=args.require_sky,
+        rng_seed=args.rng_seed
     )
     
     # Print summary of physical calibration
