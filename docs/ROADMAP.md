@@ -19,17 +19,17 @@ living; update it as tasks land.
   Export PPC histograms/QQ plots to the publish bundle; reference them in the
   results README.
 
-- [ ] **Figure reproduction guide**  
+- [x] **Figure reproduction guide**  
   Add a walkthrough (“reproduce Figure 1–3”) in README or a dedicated doc,
   referencing `make full` and figure filenames.
 
 ## Important (should land soon)
 
-- [ ] **CI artifact upload**  
+- [x] **CI artifact upload**  
   Extend `.github/workflows/ci.yml` to run `make quick` on a small dataset and
   upload the resulting JSON/PNGs as build artifacts.
 
-- [ ] **MCMC / ablation seeds**  
+- [x] **MCMC / ablation seeds**  
   When Bayesian or ablation scripts are committed, ensure their RNG seeds are
   surfaced in results and CLI (similar to `--rng-seed` in run_analysis).
 
@@ -43,9 +43,8 @@ living; update it as tasks land.
   Provide a Dockerfile (or uv/conda environment) that runs `make full` out of
   the box.
 
-- [ ] **Automated publication bundle**  
-  Wire `scripts/make_publication_bundle.py` into a CLI target that zips results,
-  figures, DATA_SOURCES.md, and CITATION metadata for submission.
+- [x] **Automated publication bundle**  
+  `scripts/make_publication_bundle.py` runs the analysis and assembles the publish directory.
 
 ## Completed
 

@@ -67,7 +67,29 @@ which validates every tracked file against `data/SHA256SUMS`.
   predictors
 - `docs/ARCHITECTURE.md` – high-level data & module flow
 - `docs/ROADMAP.md` – remaining rigor tasks / TODOs
+- `docs/RELEASE.md` – release checklist and DOI registration steps
+- `docs/FIGURE_REPRODUCTION.md` – regenerate figures from saved results
 - `results/.../README.md` – auto-generated bundle notes
+
+## Publication bundle automation
+
+Use `scripts/make_publication_bundle.py` to run the full pipeline, render
+figures, and collect artifacts into a timestamped directory. Example:
+
+```bash
+python scripts/make_publication_bundle.py \
+  --config configs/default.yaml \
+  --tdcosmo-csv data/tdcosmo_time_delays.csv \
+  --kappa-csv data/kappa_ext.csv \
+  --healpix /path/to/HFI_SkyMap_857_R3.00_full.fits \
+  --nside 2048 \
+  --clock-csv data/quick/clocks_quick.csv \
+  --pulsar-csv data/quick/pulsars_quick.csv \
+  --auto-I0
+```
+
+The command assembles `ivi_publish_results.json`, derived CSVs, figures
+(`fig_*`, `ppc_summary.png`), and the methods appendix under `results/publish_*`.
 
 ## Contributing
 

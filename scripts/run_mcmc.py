@@ -35,6 +35,7 @@ def parse_args():
     ap.add_argument("--steps", type=int, default=4000)
     ap.add_argument("--burn", type=int, default=1000)
     ap.add_argument("--outdir", default="results/mcmc_out")
+    ap.add_argument("--rng-seed", type=int, default=42)
     return ap.parse_args()
 
 def main():
@@ -137,13 +138,24 @@ def main():
     # run
     out = run_emcee(logpost, theta0,
                     nwalkers=args.walkers, nsteps=args.steps, burn=args.burn,
-                    progress=True, random_state=42)
+                    progress=True, random_state=args.rng_seed)
 
     # save
     np.savez(os.path.join(args.outdir, "mcmc_chain.npz"),
-             chain=out["chain"], log_prob=out["log_prob"])
+             chain=out["chain"], log_prob=out["log_prob"], rng_seed=args.rng_seed)
     with open(os.path.join(args.outdir, "config_used.json"), "w") as f:
         json.dump(cfg, f, indent=2)
+    with open(os.path.join(args.outdir, "run_metadata.json"), "w") as f:
+        json.dump({
+            "rng_seed": args.rng_seed,
+            "walkers": args.walkers,
+            "steps": args.steps,
+            "burn": args.burn,
+            "use_cov": args.use_cov,
+            "rho_intra_lens": args.rho_intra_lens,
+            "kappa_csv": args.kappa_csv,
+            "healpix": args.healpix
+        }, f, indent=2)
 
     # quick summary
     chain = out["chain"]
