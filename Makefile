@@ -15,6 +15,10 @@ verify:
 quick:
 	$(PYTHON) scripts/run_analysis.py \
 		--config configs/default.yaml \
+		--tdcosmo-csv data/quick/tdcosmo_quick.csv \
+		--kappa-csv data/quick/kappa_ext_quick.csv \
+		--clock-csv data/quick/clocks_quick.csv \
+		--pulsar-csv data/quick/pulsars_quick.csv \
 		--output-dir results/quick_run \
 		--no-plots \
 		--no-jackknife \

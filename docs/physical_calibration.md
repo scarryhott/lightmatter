@@ -110,15 +110,32 @@ The analysis produces several outputs in the specified output directory:
 ## Interpreting Results
 
 ### Radiation Field (G(T))
-- The radiation field is computed as: `G(T) = (I/I0)^gamma`
-- `I`: Intensity from HEALPix map [MJy/sr]
-- `I0`: Reference intensity (set in config)
-- `gamma`: Power-law exponent (set in config)
+- The radiation proxy is defined as `G(T) = (I / I0)^γ`, where the intensity `I`
+  is read from the HEALPix map in units of MJy/sr. We assume the Planck HFI maps
+  are beam-corrected; optional smoothing parameters applied in
+  `fill_radiation_from_map_for_*` are logged in the provenance. Use
+  `--auto-I0` to normalise by the median lens sightline intensity, or specify
+  `--I0` explicitly. The exponent `γ` defaults to 1 but can be tuned to mimic a
+  more physical spectral response.
+
+- Because the Planck intensity is not a direct thermometer, treat `G` as a
+  dimensionless proxy. Regression outputs are reported in σ-units, and the
+  provenance JSON captures `I0_used`, smoothing, masks, and map filenames.
 
 ### Convergence (κ)
-- Physical κ_ext values are used when available
-- Fall back to environment-based proxies when κ_ext is missing
-- The model uses `F(κ) = (κ/κ0)^p` to compute the graininess effect
+- Published κ_ext values (e.g., H0LiCOW) are ingested from CSV via
+  `fill_kappa_from_map_for_*`. The model uses `F(κ) = (κ/κ0)^p`; the default
+  `κ0` comes from `configs/physical.yaml` and should match the scaling of the
+  input catalogue.
+
+- When κ_ext is absent, the pipeline falls back to environment buckets
+  (`low`, `medium`, `high`), mapping to fiducial κ values (`1e19`, `5e19`,
+  `1e20`). These defaults live in `DataHub.env_kappa_proxy`; update them to
+  match the lens sample under study and document any changes here.
+
+- If a HEALPix κ map is provided (`--kappa-map`), sampled values are stored in
+  `kappa_map` columns and logged in the provenance (`nside`, smoothing, masks).
+  Global scaling via `--kappa-scale` is also captured in the output JSON.
 
 ### Parameter Constraints
 - `epsilon_flat`: Constrained by the clock comparison data

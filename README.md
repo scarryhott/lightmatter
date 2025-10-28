@@ -29,7 +29,7 @@ python scripts/run_analysis.py --help
 
 ```bash
 make data                # download Planck map (if needed) and verify checksums
-make quick SEED=123      # fast run with synthetic defaults (no jackknife/permutation)
+make quick SEED=123      # fast run using data/quick/* (no jackknife/permutation)
 make full RAD_MAP=path/to/planck.fits KAPPA_MAP=path/to/kappa.fits SEED=123
 ```
 

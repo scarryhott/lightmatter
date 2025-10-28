@@ -1,0 +1,224 @@
+{
+  "params": {
+    "epsilon_grain": 1e-18,
+    "epsilon_flat": -1e-19,
+    "E0_eV": 10.0,
+    "kappa0": 1e+20,
+    "p": 1.0,
+    "q": 1.0
+  },
+  "lensing": {
+    "channel": "lensing",
+    "chi2": 0.006448062747316335,
+    "dof": 1,
+    "chi2_reduced": 0.006448062747316335,
+    "coef_names": [
+      "intercept",
+      "G_temp",
+      "F_kappa"
+    ],
+    "coef": [
+      0.006726309075625921,
+      -0.0005921471266248921,
+      0.0
+    ],
+    "coef_ci95": [
+      0.03389140290585524,
+      1186575.4462969308,
+      1186575.4462969308
+    ],
+    "scale_info": {
+      "G_temp": {
+        "mean": 6.232928194905964e-06,
+        "std": 1.471158152254466e-06,
+        "source": "declination_proxy",
+        "n_obs": 4
+      },
+      "F_kappa": {
+        "mean": 3e-22,
+        "std": 1.0392304845413262e-22,
+        "source": "physical",
+        "n_obs": 4
+      },
+      "sigma_obs": {
+        "values": [
+          0.05460363557778625,
+          0.04754490938023376,
+          0.022254468541589308,
+          0.019411797151203145
+        ],
+        "median": 0.03489968896091153,
+        "mean": 0.03595370266270311,
+        "min": 0.019411797151203145,
+        "max": 0.05460363557778625
+      },
+      "mu_GT": 6.232928194905964e-06,
+      "sd_GT": 1.471158152254466e-06,
+      "mu_FK": 3e-22,
+      "sd_FK": 1.0392304845413262e-22,
+      "y_mean": 0.007372465622767531,
+      "y_std": 0.0015053065346521124,
+      "n_obs": 4
+    }
+  },
+  "clocks": {
+    "channel": "clocks",
+    "chi2": 1.3950370370370358e-35,
+    "dof": 4,
+    "chi2_reduced": 3.4875925925925895e-36,
+    "coef_names": [
+      "a (intercept)",
+      "eps_flat (slope)"
+    ],
+    "coef": [
+      6.66666666666678e-20,
+      6.8104857425431e-19
+    ],
+    "coef_ci95": [
+      1.4943190034094512e-18,
+      1.494319003409451e-18
+    ],
+    "scale_info": {
+      "dG_mean": 0.0009231318256917501,
+      "dG_std": 1.165133885021334e-05,
+      "eps_flat_est": 5.845238757620029e-14,
+      "eps_flat_se": 6.543519715648649e-14,
+      "eps_flat_upper_95": 1.867053740029138e-13,
+      "n_obs": 6,
+      "sigma_obs": {
+        "values": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "median": 1.0,
+        "mean": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    }
+  },
+  "pulsars": {
+    "channel": "pulsars",
+    "chi2": 4.6296392893923926e-30,
+    "dof": 1,
+    "chi2_reduced": 4.6296392893923926e-30,
+    "coef_names": [
+      "a (intercept)",
+      "scale * eps_grain"
+    ],
+    "coef": [
+      0.12110171344782858,
+      -0.12747548783981952
+    ],
+    "coef_ci95": [
+      1.1936576649267886e-16,
+      2.404204077359529e-16
+    ],
+    "scale_info": {
+      "sigma_obs": {
+        "values": [
+          0.02039607805437114,
+          0.01019803902718557
+        ],
+        "median": 0.015297058540778355,
+        "mean": 0.015297058540778355,
+        "min": 0.01019803902718557,
+        "max": 0.02039607805437114
+      },
+      "predictor": {
+        "mean": 0.35000000000000003,
+        "std": 0.2,
+        "n_obs": 2
+      }
+    }
+  },
+  "combined": {
+    "chi2_total": 0.006448062747316335,
+    "dof_total": 6,
+    "chi2_reduced": 0.0010746771245527225
+  },
+  "diagnostics": {
+    "posterior_predictive": {
+      "lensing": {
+        "statistic": "chi2",
+        "observed": 0.0038291548848630175,
+        "p_greater": 1.0,
+        "p_less": 0.0,
+        "two_tailed": 0.0,
+        "rep_mean": 4.006194792570216,
+        "rep_std": 2.878942549796763,
+        "rep_q05": 0.7228239561040707,
+        "rep_q50": 3.306473273055299,
+        "rep_q95": 9.722408712637284,
+        "n_draws": 2048
+      },
+      "clocks": {
+        "statistic": "chi2",
+        "observed": 1.3950370370370358e-35,
+        "p_greater": 1.0,
+        "p_less": 0.0,
+        "two_tailed": 0.0,
+        "rep_mean": 5.7873026372714,
+        "rep_std": 3.2711197421316696,
+        "rep_q05": 1.602246440701029,
+        "rep_q50": 5.205274293886344,
+        "rep_q95": 12.021143066041738,
+        "n_draws": 2048
+      },
+      "pulsars": {
+        "statistic": "chi2",
+        "observed": 4.629639289392393e-30,
+        "p_greater": 1.0,
+        "p_less": 0.0,
+        "two_tailed": 0.0,
+        "rep_mean": 2.0395338763918343,
+        "rep_std": 2.041524980398132,
+        "rep_q05": 0.10192657932605126,
+        "rep_q50": 1.4563496086318366,
+        "rep_q95": 6.029072946902369,
+        "n_draws": 2048
+      }
+    }
+  },
+  "provenance": {
+    "config": "configs/default.yaml",
+    "timestamp": "20251027_200246",
+    "code_version": "0.1.0",
+    "rng_seed": 123,
+    "rng_draws": {
+      "ppc_lensing": 66316749,
+      "ppc_clocks": 2930678937,
+      "ppc_pulsars": 2546691363
+    },
+    "tdcosmo_csv": "data/quick/tdcosmo_quick.csv",
+    "clock_csv": "data/quick/clocks_quick.csv",
+    "pulsar_csv": "data/quick/pulsars_quick.csv",
+    "kappa_csv": "data/quick/kappa_ext_quick.csv",
+    "kappa_map": null,
+    "kappa_field": 0,
+    "kappa_nest": false,
+    "kappa_smooth_arcmin": null,
+    "kappa_mask": null,
+    "kappa_mask_field": 0,
+    "kappa_scale": 1.0,
+    "rad_map": null,
+    "rad_field": 0,
+    "rad_nest": false,
+    "rad_smooth_arcmin": null,
+    "rad_mask": null,
+    "rad_mask_field": 0,
+    "auto_I0": false,
+    "I0_input": null,
+    "I0_used": null,
+    "gamma": 1.0,
+    "require_sky": false,
+    "map_provenance": {
+      "kappa": null,
+      "radiation": null
+    }
+  }
+}

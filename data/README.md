@@ -26,10 +26,18 @@ This directory should contain the following files for the IVI time-thickness ana
 
 ```
 data/
-├── planck_857_healpix.fits  # Planck 857 GHz HEALPix map
-├── tdcosmo_time_delays.csv   # TDCOSMO time-delay data
-└── h0licow_kappa_ext.csv    # kappa_ext values for lens systems
+├── planck_857_healpix.fits        # Planck 857 GHz HEALPix map (optional)
+├── tdcosmo_time_delays.csv        # TDCOSMO time-delay data
+├── h0licow_kappa_ext.csv          # κ_ext values for lens systems
+└── quick/
+    ├── tdcosmo_quick.csv
+    ├── kappa_ext_quick.csv
+    ├── clocks_quick.csv
+    └── pulsars_quick.csv
 ```
+
+The `quick/` subdirectory contains a minimal dataset used by `make quick` for
+fast regression smoke tests. Each file is checksummed in `data/SHA256SUMS`.
 
 ## Running the Analysis
 

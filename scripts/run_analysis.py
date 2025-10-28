@@ -636,7 +636,6 @@ def run_analysis(
             print("\n[DIAGNOSTICS] Posterior predictive checks (χ² two-tailed p-values):")
             for channel, info in printable.items():
                 print(f"  {channel}: p = {info['two_tailed']:.3f}")
-*** End Patch
     # Run jackknife analysis for lensing
     if run_jackknife and len(df_lens['lens_id'].unique()) > 1:
         print("\n[DIAGNOSTICS] Running jackknife analysis...")

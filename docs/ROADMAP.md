@@ -6,12 +6,10 @@ living; update it as tasks land.
 
 ## Blocking (before journal submission)
 
-- [ ] **Data availability bundle**  
-  Provide a small committed dataset (or scripted fetch with checksums) that
-  exercises the real-data path end-to-end. Include SHA256SUMS and a `make quick`
-  variant that uses it by default.
+- [x] **Data availability bundle**  
+  Added `data/quick/*` with checksums and wired `make quick` to use it.
 
-- [ ] **κ/G unit narrative & uncertainty model**  
+- [x] **κ/G unit narrative & uncertainty model**  
   Extend docs/physical_calibration.md to spell out unit conversions for the
   Planck map → G(T) proxy, κ_ext scaling, and the environment bucket mapping.
   Document the uncertainty model choices per channel (lensing covariance,
