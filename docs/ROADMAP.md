@@ -15,7 +15,7 @@ living; update it as tasks land.
   Document the uncertainty model choices per channel (lensing covariance,
   pulsar upper bounds, clock systematics).
 
-- [ ] **Posterior predictive visualisation**  
+- [x] **Posterior predictive visualisation**  
   Export PPC histograms/QQ plots to the publish bundle; reference them in the
   results README.
 

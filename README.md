@@ -45,7 +45,8 @@ python run_analysis_with_planck.py
 
 This helper downloads the Planck 857 GHz map, verifies it, and runs the
 analysis with plots enabled, depositing outputs in
-`results/planck_857_analysis`.
+`results/planck_857_analysis`. Posterior predictive diagnostics are written to
+`ppc_summary.png` alongside the other figures.
 
 ## Data provenance
 

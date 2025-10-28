@@ -59,4 +59,5 @@ def posterior_predictive_check(
         "rep_q50": float(np.quantile(chi2_rep, 0.5)),
         "rep_q95": float(np.quantile(chi2_rep, 0.95)),
         "n_draws": int(n_draws),
+        "rep_values": chi2_rep.tolist(),
     }
